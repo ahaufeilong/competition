@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>2020年安徽省银行业网络安全知识竞赛</title>
+    <!-- Main css -->
+    <link href="/css/jingsai.css" rel="stylesheet">
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">  
+		var intDiff;//倒计时总秒数量
+		function timer(intDiff){
+		    window.setInterval(function(){
+		    var day=0,
+		        hour=0,
+		        minute=0,
+		        second=0;//时间默认值        
+		    if(intDiff > 0){
+		        day = Math.floor(intDiff / (60 * 60 * 24));
+		        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+		        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+		        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+		    }else{		   
+		    	 $('#second_show').html('<s></s>答题时间到');
+            }
+		        
+		    if (minute <= 9) minute = '0' + minute;
+		    if (second <= 9) second = '0' + second;
+		    $('#day_show').html(day+"天");
+		    $('#hour_show').html('<s id="h"></s>'+hour+'时');
+		    $('#minute_show').html('<s></s>'+minute+'分');
+		    $('#second_show').html('<s></s>'+second+'秒');
+		    intDiff--;
+		    }, 1000);
+		    
+		} 
+		$(function(){
+			
+			//显示题库类型
+			
+			
+			//显示答案默认隐藏
+			$('.select_que_answer').hide();
+			
+			//倒计时默认隐藏
+			$('.time-item').hide();
+			
+			//计时开始
+			$('#time_start').click(function(){
+				$('.time-item').show();
+				var q_time = $('.que_time').val();
+				intDiff = parseInt(q_time);
+			    timer(intDiff);
+			    
+			});
+			
+			//显示答案
+			$('#show_answer').click(function(){
+				$('.select_que_answer').show();
+			});
+			
+			//继续抽题
+			$('#continue_select').click(function(){
+				var flag = $('.flag').val();
+				window.location.href = "select/"+flag;
+			});
+			
+			//返回主页面
+			$('#back_index').click(function(){
+				window.location.href = "index";
+			});
+		}); 
+	</script>
+</head>
+<body>
+    <section>
+		<div class="section-title">
+		   <div class="cl-yellow">
+			   <h2>2020年安徽省银行业网络安全知识竞赛</h2>
+		   </div>
+        </div>
+		<div class="section-content">
+			<div class="select_roll">
+				<div class="select_show_title">
+					 <h4><span class="qutype" th:text="${qutype}"></span></h4>
+					 <input type="hidden" class="flag" th:value="${flag}">
+				</div>
+				<div class="select_show_content">					
+					 <div class="select_que_title"><span class="timu">【题目】</span><span  th:utext="${qu.que_title}"></span></div>
+					 <div class="select_que_answer"><span class="timu">【答案】</span><span class="select_que_title">B</span></div>
+					 
+				</div>
+				<div class="operation_click">
+				    <input type="hidden" class="que_time" th:value="${qu.backtime}">
+				    <div class="operation_click_left">
+					    <button class="button_click" id="time_start">计时开始</button>
+						<button class="button_click" id="show_answer">显示答案</button>
+						<button class="button_click" id="continue_select">继续抽题</button>
+						<button class="button_click" id="back_index">返回主页</button>
+				    </div>
+					<div class="time-item"><strong id="second_show">0秒</strong></div>
+				</div>
+			</div>
+			
+			
+        </div>
+	</section>
+</body>
+</html>

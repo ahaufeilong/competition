@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>2020年安徽省银行业网络安全知识竞赛</title>
+    <!-- Main css -->
+    <link href="/css/jingsai.css" rel="stylesheet">
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    
+    <script>
+        var qulist,flag,pcount,xinm,flag;     
+        
+        //每次抽取出除已被抽的
+		function getQuestionList(){
+			flag = $('.flag').val();
+			$.post("/getQuestionListExselect",{flag:flag}, function(data) {
+				xinm=eval(data);
+				pcount = xinm.length;//参加人数
+				startNum();
+			});	
+		}
+        
+		var runing = true;
+		var num = 0;
+		var t;
+		//开始停止
+		function start() {
+			if (runing) {
+				runing = false;
+				$('#btntxt').removeClass('start').addClass('stop');
+				$('#btntxt').html('停止');
+				getQuestionList();
+				//startNum();
+			} else {
+				runing = true;
+				$('#btntxt').removeClass('stop').addClass('start');
+				$('#btntxt').html('开始');
+				stop();
+			}
+		}
+		//循环参加名单
+		function startNum() {
+			num = Math.floor(Math.random() * pcount);
+			var num_v= xinm[num].que_num;
+			$('.select_num').html("<a href='/questionshow?id="+num_v+"&flag="+flag+"'>"+num_v+"</a>");
+			t = setTimeout(startNum, 0);
+		}
+		//停止跳动
+		function stop() {
+			pcount = xinm.length-1;
+			clearInterval(t);
+			t = 0;
+		}
+		
+		
+		
+	 </script>
+</head>
+<body>
+    <section>
+		<div class="section-title">
+		   <div class="cl-yellow">
+			   <h2>2020年安徽省银行业网络安全知识竞赛</h2>
+		   </div>
+        </div>
+		<div class="section-content">
+			<div class="select_roll">
+			    <div class="roll_top"></div>
+				<div class="roll_title">
+					 <h2><span class="q_type" th:text="${qutype}">必答题</span></h2>
+					  <input type="hidden" class="flag" th:value="${flag}">
+					 
+				</div>
+				<div class="roll_show">
+					 <span class="select_num">题号</span>
+					 <div class="start" id="btntxt" onclick="start()">开始</div>
+				</div>
+			</div>
+			
+			
+        </div>
+	</section>
+</body>
+</html>

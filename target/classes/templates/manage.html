@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>2020年安徽省银行业网络安全知识竞赛</title>
+
+    <!-- Main css -->
+    <link href="css/jingsai.css" rel="stylesheet">
+    <script src="js/jquery-3.2.1.min.js"></script>
+	<script>		
+		$(document).ready(function(){		
+			  $("#upload").click(function(){
+				  var fileName = $("#uploadfile")[0].files[0].name;
+				  var fileType = fileName.substr(fileName.lastIndexOf(".")).toUpperCase();
+				  if (fileType != ".XLS" && fileType != ".xlsx" && fileType != ".et" && fileType != ".cvs") {
+				      alert("excel格式格式不正确");
+				      return false;
+				  } else {
+				        //导入excel
+					    var formdata = new FormData();
+		                formdata.append('excel', $('#uploadfile').get(0).files[0]);
+		                $.ajax({
+		                    type: 'POST',
+		                    url: 'importExcel',
+		                    contentType : false,
+		                    data : formdata,
+		                    processData : false,
+		                    success: function (data) {
+		                        if(data=='success'){
+		                        	alert("数据成功导入");
+		                        }
+		                    },
+		                    error : function(data) {
+		                        alert('上传失败！');
+		                    }
+		                });
+				  }
+			  
+			  });	
+			  
+			  
+		});
+		
+	 </script>
+</head>
+<body>	
+	 <section>
+		<div class="section-title">
+		   <div class="cl-yellow">
+			   <h2>2020年安徽省银行业网络安全知识竞赛</h2>
+		   </div>
+        </div>
+		<div class="section-content">
+			<div class="select_roll">
+			<div class="roll_top"></div>
+			    <div class="roll_title">
+					 <h2><span class="q_type">系统管理</span></h2>
+				</div>
+				<div class="system_manage_content">					
+					<div class="system_manage_content_file">
+						选择文件<input type="file" name="excel" id="uploadfile"/> 
+						<button class="button_click" id=upload >导入</button>
+					</div>
+
+					<div class="system_manage_content_init">
+						<button class="button_click" id="init">系统数据初始化</button>
+						&nbsp;
+						<button class="button_click" id="del">删除题库数据</button>
+					</div>
+				</div>
+					
+			</div>
+			
+			
+        </div>
+	</section>
+</body>
+</html>
